@@ -1,9 +1,11 @@
 unit VolmSldr;
 
+{$MODE Delphi}
+
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  LCLIntf, LCLType, LMessages, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   Math, PermHint;
 
 type
@@ -104,7 +106,9 @@ var
 begin
   Bmp := TBitMap.Create;
   try
-    with Bmp.Canvas do
+    //with Bmp.Canvas do
+    // XXX Someting incorrect. Drawing directly into 'Canvas' instead of bitmap
+    with Canvas do
       begin
       Bmp.Width := Width;
       Bmp.Height := Height;
@@ -134,7 +138,8 @@ begin
         then DrawFrameControl(Handle, R, DFC_BUTTON, DFCS_BUTTONPUSH)
         else DrawEdge(Handle, R, BDR_SUNKENOUTER, BF_MIDDLE or BF_RECT);
 
-      Canvas.Draw(0, 0, Bmp);
+      // XXX Drawing directly into 'Canvas' instead of bitmap
+      //Canvas.Draw(0, 0, Bmp);
       end;
     finally
       Bmp.Free;

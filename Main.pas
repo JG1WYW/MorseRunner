@@ -5,15 +5,17 @@
 //------------------------------------------------------------------------------
 unit Main;
 
+{$MODE Delphi}
+
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  LCLIntf, LCLType, LMessages, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
   Buttons, SndCustm, SndOut, Contest, Ini, MorseKey, CallLst,
   VolmSldr, VolumCtl, StdCtrls, Station, Menus, ExtCtrls, Log, MAth,
-  ComCtrls, Spin, SndTypes, ShellApi, jpeg, ToolWin, ImgList, Crc32, 
-  WavFile, IniFiles, System.ImageList, System.Character, System.Actions,
-  Vcl.ActnList;
+  ComCtrls, Spin, SndTypes, ToolWin, ImgList, ActnList, Crc32,
+  RichMemo, WavFile, IniFiles{, System.ImageList, System.Character, System.Actions,
+  Vcl.ActnList};
 
 const
   WM_TBDOWN = WM_USER + 1;
@@ -60,7 +62,7 @@ type
     Panel5: TPanel;
     Exit1: TMenuItem;
     Panel6: TPanel;
-    RichEdit1: TRichEdit;
+    RichEdit1: TRichMemo;
     Label12: TLabel;
     Label13: TLabel;
     Label14: TLabel;
@@ -312,7 +314,7 @@ implementation
 
 uses ScoreDlg;
 
-{$R *.DFM}
+{$R *.lfm}
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
@@ -396,7 +398,7 @@ end;
 
 procedure TMainForm.Edit3KeyPress(Sender: TObject; var Key: Char);
 begin
-  Key := Key.ToUpper();
+  Key := UpCase(Key);
 
   if not CharInSet(Key, ['0'..'9', 'H', 'M', 'L', 'P', #8]) then Key := #0;
 end;
@@ -760,7 +762,7 @@ var
   FileName: string;
 begin
   FileName := ExtractFilePath(ParamStr(0)) + 'readme.txt';
-  ShellExecute(GetDesktopWindow, 'open', PChar(FileName), '', '', SW_SHOWNORMAL);
+   OpenDocument(PChar(FileName)); { *Converted from ShellExecute* }
 end;
 
 
@@ -936,7 +938,8 @@ end;
 procedure TMainForm.SetToolbuttonDown(Toolbutton: TToolbutton;
   ADown: boolean);
 begin
-  Windows.PostMessage(Handle, WM_TBDOWN, Integer(ADown), Integer(Toolbutton));
+  //Windows.PostMessage(Handle, WM_TBDOWN, Integer(ADown), Integer(Toolbutton));
+     PostMessage(Handle, WM_TBDOWN, Integer(ADown), Integer(Toolbutton));
 end;
 
 
@@ -1000,7 +1003,7 @@ end;
 
 procedure OpenWebPage(Url: string);
 begin
-  ShellExecute(GetDesktopWindow, 'open', PChar(Url), '', '', SW_SHOWNORMAL);
+   OpenDocument(PChar(Url)); { *Converted from ShellExecute* }
 end;
 
 
@@ -1182,7 +1185,7 @@ var
   FileName: string;
 begin
   FileName := ChangeFileExt(ParamStr(0), '.wav');
-  ShellExecute(GetDesktopWindow, 'open', PChar(FileName), '', '', SW_SHOWNORMAL);
+   OpenDocument(PChar(FileName)); { *Converted from ShellExecute* }
 end;
 
 

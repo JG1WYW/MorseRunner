@@ -5,10 +5,12 @@
 //------------------------------------------------------------------------------
 unit Log;
 
+{$MODE Delphi}
+
 interface
 
 uses
-  Windows, SysUtils, Classes, Graphics, RndFunc, Math, RichEdit, Forms;
+  LCLIntf, LCLType, LMessages, SysUtils, Classes, Graphics, RndFunc, Math, RichEdit, Forms;
 
 
 procedure SaveQso;
@@ -56,12 +58,9 @@ begin
   MainForm.RichEdit1.Lines.Clear;
 
   if Ini.RunMode = rmHst
-    then MainForm.RichEdit1.Lines.Add(' UTC       Call          Recv      Sent      Score  Chk')
-    else MainForm.RichEdit1.Lines.Add(' UTC       Call          Recv      Sent      Pref   Chk');
-  MainForm.RichEdit1.SelStart := 1;
-  MainForm.RichEdit1.SelLength := Length(MainForm.RichEdit1.Lines[0]);
-  MainForm.RichEdit1.SelAttributes.Style := [fsUnderline];
-  MainForm.RichEdit1.SelAttributes.Color := clBlue;
+    then MainForm.RichEdit1.Lines.Add(' UTC       Call          Recv         Sent      Score  Chk')
+    else MainForm.RichEdit1.Lines.Add(' UTC       Call          Recv         Sent      Pref   Chk');
+  MainForm.RichEdit1.SetRangeColor(1, Length(MainForm.RichEdit1.Lines[0]), clBlue);
 
   if Ini.RunMode = rmHst then Empty := '' else Empty := '0';
 
@@ -263,21 +262,17 @@ var
 begin
   with QsoList[High(QsoList)] do
     S := FormatDateTime(' hh:nn:ss  ', t) +
-         Format('%-12s  %.3d %-6s  %.3d %.4d  %-5s  %-3s',
+         Format('%-12s  %.3d %-7s  %.3d %.4d  %-5s  %-3s',
          [Call, Rst, Nr, Tst.Me.Rst,
          //Tst.Me.NR,
          MainForm.RichEdit1.Lines.Count,
          Pfx, Err]);
 
-  MainForm.RichEdit1.SelStart := Length(MainForm.RichEdit1.Text);
-  MainForm.RichEdit1.SelLength := 1;
-  MainForm.RichEdit1.SelAttributes.Color := clBlack;
+  MainForm.RichEdit1.SetRangeColor(Length(MainForm.RichEdit1.Text), 1, clBlack);
 
 //OutputDebugString(PChar('[' + S + ']'));
   MainForm.RichEdit1.Lines.Add(S);
-  MainForm.RichEdit1.SelStart := Length(MainForm.RichEdit1.Text) - 5;
-  MainForm.RichEdit1.SelLength := 3;
-  MainForm.RichEdit1.SelAttributes.Color := clRed;
+  MainForm.RichEdit1.SetRangeColor(Length(MainForm.RichEdit1.Text) - 4, 3, clRed);
 
   MainForm.RichEdit1.SelStart := Length(MainForm.RichEdit1.Text);
   MainForm.RichEdit1.Perform(EM_SCROLLCARET, 0, 0);

@@ -5,10 +5,13 @@
 //------------------------------------------------------------------------------
 unit SndCustm;
 
+{$MODE Delphi}
+
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Forms, SyncObjs, MMSystem, SndTypes;
+  LCLIntf, LCLType, LMessages, Messages, SysUtils, Classes, Forms, SyncObjs, MMSystem, SndTypes,
+  Ini, Windows, Dialogs;
 
 type
   TCustomSoundInOut = class;
@@ -98,6 +101,7 @@ begin
       Owner.BufferDone(PWaveHdr(Msg.lParam));
   except on E: Exception do
     begin
+    // Raise Exception.Create('VCL 2');
     Application.ShowException(E);
     Terminate;
     end;
@@ -118,7 +122,7 @@ constructor TCustomSoundInOut.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
 
-  SetBufCount(8{DEFAULTBUFCOUNT});
+  SetBufCount(DEFAULTBUFCOUNT);
 
   FDeviceID := WAVE_MAPPER;
 
@@ -145,7 +149,8 @@ end;
 
 procedure TCustomSoundInOut.Err(Txt: string);
 begin
-  raise ESoundError.Create(Txt);
+ // raise ESoundError.Create(Txt);
+ ShowMessage(Txt);
 end;
 
 
@@ -194,7 +199,8 @@ begin
       //FThread.Priority := tpTimeCritical;
       //start
       FEnabled := true;
-      try Start; except FreeAndNil(FThread); raise; end;
+     // try Start; except FreeAndNil(FThread); raise; end;
+      try Start; except FreeAndNil(FThread); end;
       //device started ok, wait for events
       FThread.Resume;
       end

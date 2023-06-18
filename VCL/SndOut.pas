@@ -5,11 +5,13 @@
 //------------------------------------------------------------------------------
 unit SndOut;
 
+{$MODE Delphi}
+
 interface
 
 uses
-  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
-  BaseComp, MMSystem, SndTypes, SndCustm, Math;
+  LCLIntf, LCLType, LMessages, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  BaseComp, MMSystem, SndTypes, SndCustm, Math, Ini;
 
 type
   TAlSoundOut = class(TCustomSoundInOut)

@@ -1,9 +1,11 @@
 unit Calls;
 
+{$MODE Delphi}
+
 interface
 
 uses
-  SysUtils, Windows, Classes,
+  SysUtils, LCLIntf, LCLType, LMessages, Classes,
   Generics.Collections, Generics.Defaults;
 
 type
